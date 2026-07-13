@@ -1,23 +1,21 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.tp_prog2;
 
 /**
  *
  * @author gcrey
  */
-
-
-import orders.Order;
+import console.ConsoleInterface;
+import java.util.ArrayList;
 import products.Ingredient;
 import products.Item;
 import system.BurgerKingSystem;
-import users.Cook;
+import users.Employee;
+import users.EmployeeRole;
 import users.Inspector;
 import users.Manager;
-import users.Seller;
 
 public class TP_PROG2 {
 
@@ -25,68 +23,128 @@ public class TP_PROG2 {
 
         BurgerKingSystem system = new BurgerKingSystem();
 
-        Manager manager = new Manager("Laura", 1);
-        Seller seller = new Seller("Carlos", 2);
-        Cook cook = new Cook("Miguel", 3);
-        Inspector inspector = new Inspector("Ana", 4);
+        loadInitialUsers(system);
+        loadInitialMenu(system);
 
-        manager.addUser(system, manager);
-        manager.addUser(system, seller);
-        manager.addUser(system, cook);
-        manager.addUser(system, inspector);
+        ConsoleInterface console
+                = new ConsoleInterface(system);
 
-        Ingredient bread = new Ingredient("Bread");
-        Ingredient meat = new Ingredient("Meat");
-        Ingredient cheese = new Ingredient("Cheese");
+        console.start();
+    }
 
-        Item cheeseburger = new Item("Cheeseburger");
+    private static void loadInitialUsers(
+            BurgerKingSystem system) {
 
-        cheeseburger.addIngredient(bread);
-        cheeseburger.addIngredient(meat);
-        cheeseburger.addIngredient(cheese);
+        Manager manager
+                = new Manager("Laura", 1);
 
-        manager.addMenuItem(system, cheeseburger);
+        Employee carlos
+                = new Employee("Carlos", 2);
 
-        system.getMenu().showMenu();
+        Employee miguel
+                = new Employee("Miguel", 3);
 
-        Order order = seller.createOrder(system);
+        Employee juliana
+                = new Employee("Juliana", 4);
 
-        seller.addItemToOrder(order, cheeseburger);
+        Inspector inspector
+                = new Inspector("Ana", 5);
 
-        boolean submitted = seller.submitOrder(order, system);
+        system.addUser(manager);
+        system.addUser(carlos);
+        system.addUser(miguel);
+        system.addUser(juliana);
+        system.addUser(inspector);
 
-        if (submitted) {
-            System.out.println("Order submitted.");
-        }
+        manager.assignRole(
+                carlos,
+                EmployeeRole.SELLER
+        );
 
-        boolean assigned = manager.assignOrderToCook(order, cook);
+        manager.assignRole(
+                miguel,
+                EmployeeRole.COOK
+        );
 
-        if (assigned) {
-            System.out.println("Order assigned to cook.");
-        }
+        manager.assignRole(
+                juliana,
+                EmployeeRole.UNASSIGNED
+        );
+    }
 
-        boolean preparing = cook.startPreparingOrder(order);
+    private static void loadInitialMenu(
+            BurgerKingSystem system) {
 
-        if (preparing) {
-            for (Item item : order.getItems()) {
-                cook.prepareItem(item);
-            }
-        }
+        Ingredient bread
+                = new Ingredient("Pan");
 
-        boolean ready = cook.markOrderReady(order);
+        Ingredient meat
+                = new Ingredient("Carne");
 
-        if (ready) {
-            System.out.println("Order is ready.");
-        }
+        Ingredient cheese
+                = new Ingredient("Queso");
 
-        boolean delivered = seller.deliverOrder(order);
+        Ingredient lettuce
+                = new Ingredient("Lechuga");
 
-        if (delivered) {
-            System.out.println("Order delivered.");
-        }
+        Ingredient tomato
+                = new Ingredient("Tomate");
 
-        manager.sendSalesOrdersToInspector(system, inspector);
+        Ingredient onion
+                = new Ingredient("Cebolla");
 
-        inspector.showSalesReport();
+        ArrayList<Ingredient> cheeseburgerIngredients
+                = new ArrayList<>();
+
+        cheeseburgerIngredients.add(bread);
+        cheeseburgerIngredients.add(meat);
+        cheeseburgerIngredients.add(cheese);
+
+        Item cheeseburger
+                = new Item(
+                        "Hamburguesa con queso",
+                        cheeseburgerIngredients,
+                        6500
+                );
+
+        ArrayList<Ingredient> completeBurgerIngredients
+                = new ArrayList<>();
+
+        completeBurgerIngredients.add(bread);
+        completeBurgerIngredients.add(meat);
+        completeBurgerIngredients.add(cheese);
+        completeBurgerIngredients.add(lettuce);
+        completeBurgerIngredients.add(tomato);
+        completeBurgerIngredients.add(onion);
+
+        Item completeBurger
+                = new Item(
+                        "Hamburguesa completa",
+                        completeBurgerIngredients,
+                        8000
+                );
+
+        ArrayList<Ingredient> friesIngredients
+                = new ArrayList<>();
+
+        Ingredient potato
+                = new Ingredient("Papa");
+
+        Ingredient salt
+                = new Ingredient("Sal");
+
+        friesIngredients.add(potato);
+        friesIngredients.add(salt);
+
+        Item fries
+                = new Item(
+                        "Papas fritas",
+                        friesIngredients,
+                        3500
+                );
+
+        system.getMenu().addItem(cheeseburger);
+        system.getMenu().addItem(completeBurger);
+        system.getMenu().addItem(fries);
     }
 }

@@ -14,6 +14,8 @@ import products.Item;
  */
 
 
+import java.util.ArrayList;
+
 public class Menu {
 
     private ArrayList<Item> items;
@@ -54,12 +56,14 @@ public class Menu {
 
     public void showMenu() {
         if (items.isEmpty()) {
-            System.out.println("Menu vacio");
+            System.out.println("El menú está vacío.");
             return;
         }
 
+        System.out.println("Menú disponible:");
+
         for (Item item : items) {
-            System.out.println(item.getName());
+            System.out.println("- " + item.getName());
         }
     }
 }

@@ -55,7 +55,7 @@ public class Inspector extends User {
     }
 
     public void showSalesReport() {
-        System.out.println("Completed orders: " + countSalesOrders());
-        System.out.println("Items sold: " + countItemsSold());
+        System.out.println("Ordenes completadas: " + countSalesOrders());
+        System.out.println("Items vendidos: " + countItemsSold());
     }
 }

@@ -1,6 +1,5 @@
 package users;
 
-
 import orders.Order;
 import orders.OrderStatus;
 import system.BurgerKingSystem;
@@ -10,12 +9,10 @@ import products.Item;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author gcrey
  */
-
 
 
 public class Manager extends User {
@@ -44,11 +41,38 @@ public class Manager extends User {
         }
     }
 
-    public void addMenuItem(BurgerKingSystem system, Item item) {
+    public boolean assignRole(
+            Employee employee,
+            EmployeeRole role) {
+
+        if (employee == null || role == null) {
+            return false;
+        }
+
+        employee.setRole(role);
+        return true;
+    }
+
+    public boolean removeRole(Employee employee) {
+        if (employee == null) {
+            return false;
+        }
+
+        employee.setRole(EmployeeRole.UNASSIGNED);
+        return true;
+    }
+
+    public void addMenuItem(
+            BurgerKingSystem system,
+            Item item) {
+
         system.getMenu().addItem(item);
     }
 
-    public boolean removeMenuItem(BurgerKingSystem system, Item item) {
+    public boolean removeMenuItem(
+            BurgerKingSystem system,
+            Item item) {
+
         return system.getMenu().removeItem(item);
     }
 
@@ -70,6 +94,10 @@ public class Manager extends User {
     }
 
     public boolean cancelOrder(Order order) {
+        if (order == null) {
+            return false;
+        }
+
         if (order.getStatus() == OrderStatus.DELIVERED
                 || order.getStatus() == OrderStatus.CANCELLED) {
             return false;
@@ -79,7 +107,18 @@ public class Manager extends User {
         return true;
     }
 
-    public boolean assignOrderToCook(Order order, Cook cook) {
+    public boolean assignOrderToCook(
+            Order order,
+            Employee employee) {
+
+        if (order == null || employee == null) {
+            return false;
+        }
+
+        if (!employee.isCook()) {
+            return false;
+        }
+
         if (order.getStatus() != OrderStatus.RECEIVED) {
             return false;
         }
@@ -88,7 +127,7 @@ public class Manager extends User {
             return false;
         }
 
-        order.setCook(cook);
+        order.setCook(employee);
         return true;
     }
 

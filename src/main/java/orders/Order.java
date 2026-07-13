@@ -1,29 +1,32 @@
 package orders;
 
+import java.util.ArrayList;
+import products.Item;
+import users.Employee;
+import users.EmployeeRole;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author gcrey
  */
-import products.Item;
-import users.Cook;
-import java.util.ArrayList;
-
 public class Order {
 
     private int id;
     private ArrayList<Item> items;
     private OrderStatus status;
-    private Cook cook;
+    private Employee seller;
+    private Employee cook;
 
     public Order(int id) {
         this.id = id;
         this.items = new ArrayList<>();
         this.status = OrderStatus.CREATED;
+        this.seller = null;
+        this.cook = null;
     }
 
     public void addItem(Item item) {
@@ -54,12 +57,38 @@ public class Order {
         this.status = status;
     }
 
-    public Cook getCook() {
+    public Employee getSeller() {
+        return seller;
+    }
+
+    public boolean setSeller(Employee seller) {
+        if (seller == null) {
+            return false;
+        }
+
+        if (seller.getRole() != EmployeeRole.SELLER) {
+            return false;
+        }
+
+        this.seller = seller;
+        return true;
+    }
+
+    public Employee getCook() {
         return cook;
     }
 
-    public void setCook(Cook cook) {
+    public boolean setCook(Employee cook) {
+        if (cook == null) {
+            return false;
+        }
+
+        if (cook.getRole() != EmployeeRole.COOK) {
+            return false;
+        }
+
         this.cook = cook;
+        return true;
     }
 
     public double calculateTotal() {

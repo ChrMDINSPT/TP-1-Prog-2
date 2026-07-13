@@ -4,21 +4,25 @@ package products;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author gcrey
  */
+
+
 public class Ingredient {
-    String name;
-    
+
+    private String name;
+
     public Ingredient(String name) {
-    this.name = name;
+        this.name = name;
     }
-    public void setName(Ingredient ingredient, String name){
-    this.name = name;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getName(Ingredient ingredient){
+
+    public String getName() {
         return name;
     }
 }
